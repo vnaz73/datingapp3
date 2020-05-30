@@ -29,7 +29,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                             if (serverError[key]) {
                                 // console.log(typeof serverError[key]);
                                 modalStateError += serverError[key] + '\n';
-                               //  modalStateError += (Array.isArray(serverError[key])) ?  serverError[key].join('\n') : serverError[key] + '\n';
+                               //  modalStateError += (Array.isArray(serverError[key])) ?
+                               //   serverError[key].join('\n') : serverError[key] + '\n';
                                 // console.log(modalStateError);
                             }
                         }
