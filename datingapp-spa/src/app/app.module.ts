@@ -6,7 +6,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import {  FileUploadModule } from 'ng2-file-upload';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +28,8 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-chagnes.guard';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+
 
 
 
@@ -52,7 +54,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MessagesComponent,
       MemberCardComponent,
       MemberDetailsComponent,
-      MemberEditComponent
+      MemberEditComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
@@ -63,6 +66,7 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       TabsModule.forRoot(),
       BsDropdownModule.forRoot(),
       NgxGalleryModule,
+      FileUploadModule,
       JwtModule.forRoot({
          config: {
            tokenGetter,
@@ -78,6 +82,7 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberDetailResolver,
       MemberListResolver,
       MemberEditResolver,
+      FileUploadModule,
       PreventUnsavedChanges,
       {
          provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig

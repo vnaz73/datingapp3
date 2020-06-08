@@ -39,6 +39,7 @@ namespace DatingApp.API
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -90,7 +91,8 @@ namespace DatingApp.API
             
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                 endpoints.MapControllers();
+                // endpoints.MapDefaultControllerRoute(); // MapControllers();
             });
         }
     }
