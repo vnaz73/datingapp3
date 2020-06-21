@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using datingapp.api.Helpers;
+using datingapp.api.Models;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Helpers;
@@ -63,6 +64,40 @@ namespace DatingApp.API.Controllers
                 return NoContent();
             
             throw new System.Exception($"Updating user {id} failed");   
+        }
+
+        [HttpPost("{id}/likes/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var like = await _repo.GetLike(id, recipientId);
+            if(like != null)
+            {
+                return BadRequest("Like already exist");
+            }
+
+            var rec = await _repo.GetUser(recipientId);
+            if(rec == null)
+            {
+                return NotFound();
+            }
+
+            var newLike = new Like
+            {
+                LikerId = id,
+                LikeeId = recipientId
+                
+            };
+            _repo.Add<Like>(newLike);
+
+            if(await _repo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Failed like user");
         }
     }
 }
