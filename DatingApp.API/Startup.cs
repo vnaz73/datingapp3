@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,10 +34,25 @@ namespace DatingApp.API
 
         public IConfiguration Configuration { get; }
 
+        // public void ConfigureDevelopmentServices(IServiceCollection services)
+        // {
+        //     services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+        //     ConfigureServices(services);
+        // }
+        // public void ConfigureProductionServices(IServiceCollection services)
+        // {
+        //     services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        //     ConfigureServices(services);
+        // }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+           // services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+           services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+           
+
             services.AddControllers();
             services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
@@ -80,7 +96,7 @@ namespace DatingApp.API
                 }); 
             }
            //app.UseHttpsRedirection();
-            // seeder.SeedUsers();
+            //seeder.SeedUsers();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             
             app.UseAuthentication();
@@ -88,12 +104,14 @@ namespace DatingApp.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             
             
             app.UseEndpoints(endpoints =>
             {
                  endpoints.MapControllers();
+                 endpoints.MapFallbackToController("Index", "Fallback");
                 // endpoints.MapDefaultControllerRoute(); // MapControllers();
             });
         }
